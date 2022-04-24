@@ -1,0 +1,22 @@
+.edit-btn {
+  max-width: 24px;
+  max-height: 24px;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  align-self: center;
+  transition: .8s;
+}
+
+.edit-btn:hover {
+  opacity: .6;
+}
+
+@media screen and (max-width: 320px) {
+  .edit-btn {
+    max-width: 18px;
+    max-height: 18px;
+  }
+}

@@ -1,0 +1,38 @@
+.popup__container {
+  display: flex;
+  flex-direction: column;
+  padding: 34px 36px 37px 36px;
+  max-width: 430px;
+  max-height: 330px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  position: relative;
+}
+
+@media screen and (max-width: 1024px) {
+  .popup__container {
+    padding: 30px 30px;
+  }
+}
+
+@media screen and (max-width: 595px) {
+  .popup__container {
+    max-width: 350px;
+    max-height: 330px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .popup__container {
+    max-width: 300px;
+    padding: 25px 22px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .popup__container {
+    max-width: 282px;
+    padding: 25px 22px;
+  }
+}
