@@ -3,8 +3,9 @@
   padding: 0;
   list-style: none;
   overflow: hidden;
-  position: relative;
   box-sizing: border-box;
   border-radius: 10px;
-  max-height: 361px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 282px 79px;
 }

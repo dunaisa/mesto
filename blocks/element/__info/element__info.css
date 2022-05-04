@@ -1,7 +1,4 @@
 .element__info {
-  position: absolute;
-  left: 0;
-  bottom: 0;
   width: 100%;
   background-color: #FFFFFF;
   display: flex;
@@ -9,4 +6,5 @@
   align-items: center;
   padding: 25px 21px;
   box-sizing: border-box;
+  grid-row: 2;
 }

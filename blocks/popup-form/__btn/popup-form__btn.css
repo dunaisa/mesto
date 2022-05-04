@@ -1,8 +1,10 @@
 .popup-form__btn {
-  max-width: 358px;
+  margin-top: 18px;
+  padding: 0;
   height: 50px;
   outline: none;
   border: none;
+  border-radius: 2px;
   cursor: pointer;
   background-color: #000000;
   color: #FFFFFF;
@@ -14,12 +16,19 @@
 }
 
 .popup-form__btn:hover {
-  opacity: .7;
+  opacity: .8;
+}
+
+@media screen and (max-width: 1024px) {
+  .popup-form__btn {
+    max-width: 357px;
+  }
 }
 
 @media screen and (max-width: 320px) {
   .popup-form__btn {
     max-height: 46px;
-    font-size: 15px;
+    font-size: 14px;
+    margin-top: 15px;
   }
 }
