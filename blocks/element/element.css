@@ -8,4 +8,9 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 282px 79px;
+  position: relative;
+}
+
+.element_disabled {
+  display: none;
 }

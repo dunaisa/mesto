@@ -26,50 +26,6 @@
     </section>
 
     <section class="elements">
-      <ul class="elements__container">
-        <li class="element">
-          <img src="images/Karachaevsk.jpg" alt="Карачаевск" class="element__image">
-          <div class="element__info">
-            <h2 class="element__info-heading">Карачаевск</h2>
-            <button class="element__like-btn" type="button" aria-label="Like"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img src="images/Gora-Elbrus.jpg" alt="Гора Эльбрус" class="element__image">
-          <div class="element__info">
-            <h2 class="element__info-heading">Гора Эльбрус</h2>
-            <button class="element__like-btn" type="button" aria-label="Like"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img src="images/Dombuy.jpg" alt="Домбай" class="element__image">
-          <div class="element__info">
-            <h2 class="element__info-heading">Домбай</h2>
-            <button class="element__like-btn" type="button" aria-label="Like"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img src="images/Canada.jpg" alt="Озеро в Канаде" class="element__image">
-          <div class="element__info">
-            <h2 class="element__info-heading">Канада</h2>
-            <button class="element__like-btn" type="button" aria-label="Like"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img src="images/France.jpg" alt="Мост во Франции" class="element__image">
-          <div class="element__info">
-            <h2 class="element__info-heading">Франция</h2>
-            <button class="element__like-btn" type="button" aria-label="Like"></button>
-          </div>
-        </li>
-        <li class="element">
-          <img src="images/German.jpg" alt="Германия" class="element__image">
-          <div class="element__info">
-            <h2 class="element__info-heading">Германия</h2>
-            <button class="element__like-btn" type="button" aria-label="Like"></button>
-          </div>
-        </li>
-      </ul>
     </section>
 
   </main>
@@ -81,7 +37,7 @@
   <div class="popup">
     <div class="popup__container">
       <h3 class="popup__container-heading">Редактировать профиль</h3>
-      <form action="submit" name="profile form" method="post" class="popup-form">
+      <form action="submit" name="profile form" method="post" class="popup-form popup-form_profile">
         <input type="text" placeholder="Имя" name="author-name"
           class="popup-form__text popup-form__text_type_author-name">
         <input type="text" placeholder="О cебе" name="author-description"
@@ -91,6 +47,31 @@
       <button class="popup__close-btn" type="button" aria-label="Close"></button>
     </div>
   </div>
+
+  <div class="popup popup_add-place">
+    <div class="popup__container">
+      <h3 class="popup__container-heading">Новое место</h3>
+      <form action="submit" name="Place edit form" method="post" class="popup-form popup-form_place">
+        <input type="text" placeholder="Название" name="Place-name"
+          class="popup-form__text popup-form__text_type_place-name">
+        <input type="text" placeholder="Ссылка на картинку" name="Place reference"
+          class="popup-form__text popup-form__text_type_place-reference">
+        <button class="popup-form__btn" type="submit">Сохранить</button>
+      </form>
+      <button class="popup__close-btn popup__close-btn_type_add-place" type="button" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <template class="elements__container" id="template-elements">
+    <li class="element">
+      <img src="" alt="" class="element__image">
+      <div class="element__info">
+        <h2 class="element__info-heading"></h2>
+        <button class="element__like-btn" type="button" aria-label="Like"></button>
+      </div>
+      <button class="element__delete-btn" type="button" aria-label="Delete"></button>
+    </li>
+  </template>
 
   <script src="./scripts/main.js"></script>
 </body>
