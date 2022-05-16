@@ -1,4 +1,3 @@
-const popup = document.querySelector('.popup');
 const popupEditFormOpenBtn = document.querySelector('.profile__edit-btn');
 const popupAddFormOpenBtn = document.querySelector('.profile__add-btn');
 const popupEditProfile = document.querySelector('.popup-edit-profile');
@@ -22,56 +21,54 @@ const popupOpenPic = document.querySelector('.popup-open-pic');
 const imagePopup = popupOpenPic.querySelector('.popup__image-figure');
 const figcaptionImagePopup = popupOpenPic.querySelector('.popup__image-figcaption');
 
-
 // Закрыть попапы на крестик
 
 popupEditProfileCloseBtn.addEventListener('click', function (evt) {
-  evt.target.closest('.popup').classList.toggle('popup_opened');
+  switchVisibilityOfPopup(popupEditProfile);
 });
 
 popupAddFormCloseBtn.addEventListener('click', function (evt) {
-  evt.target.closest('.popup').classList.toggle('popup_opened');
+  switchVisibilityOfPopup(popupAddPlace);
 });
 
 popupOpenPicCloseBtn.addEventListener('click', function (evt) {
-  evt.target.closest('.popup').classList.toggle('popup_opened');
+  switchVisibilityOfPopup(popupOpenPic);
 });
 
 // Закрыть попапы кликом в любую точку вне попапа
 
 popupEditProfile.addEventListener('click', function (event) {
   if (event.target == event.currentTarget) {
-    openPopup(popupEditProfile);
+    switchVisibilityOfPopup(popupEditProfile);
   }
 });
 
 popupAddPlace.addEventListener('click', function (event) {
   if (event.target == event.currentTarget) {
-    openPopup(popupAddPlace);
+    switchVisibilityOfPopup(popupAddPlace);
   }
 });
 
 popupOpenPic.addEventListener('click', function (event) {
   if (event.target == event.currentTarget) {
-    openPopup(popupOpenPic);
+    switchVisibilityOfPopup(popupOpenPic);
   }
 });
-
 
 // Открыть попапы
 
 popupEditFormOpenBtn.addEventListener('click', function (evt) {
   inputAuthorName.value = lastAuthorName.textContent;
   inputAuthorDescription.value = lastAuthorDescription.textContent;
-  openPopup(popupEditProfile);
+  switchVisibilityOfPopup(popupEditProfile);
 });
 
 popupAddFormOpenBtn.addEventListener('click', function (evt) {
-  openPopup(popupAddPlace);
+  switchVisibilityOfPopup(popupAddPlace);
 });
 
 // Универсальная форма открытия/закрытия попапов
-function openPopup(popupObject) {
+function switchVisibilityOfPopup(popupObject) {
   popupObject.classList.toggle('popup_opened');
 };
 
@@ -79,7 +76,7 @@ function openPopup(popupObject) {
 
 popupFormProfile.addEventListener('submit', function (evt) {
   formSubmitHandler(evt);
-  openPopup(popupEditProfile);
+  switchVisibilityOfPopup(popupEditProfile);
 });
 
 function formSubmitHandler(evt) {
@@ -87,33 +84,6 @@ function formSubmitHandler(evt) {
   lastAuthorName.textContent = inputAuthorName.value;
   lastAuthorDescription.textContent = inputAuthorDescription.value;
 };
-
-const initialCards = [
-  {
-    name: 'Карачаевск',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Гора Эльбрус',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Пятигорск',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Канада',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Франция',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Германия',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
 
 const handleSwitchLikePost = (evt) => {
   evt.target.classList.toggle('element__like-btn_active');
@@ -123,26 +93,24 @@ const handleDeletePost = (evt) => {
   evt.target.closest('.element').remove();
 };
 
-initialCards.forEach(({ name, link }) => {
-  addElement({ name, link })
-});
-
 // Функция открытия фото во весь экран
 
 function handleOpenImage(evt) {
   imagePopup.src = evt.target.src;
   imagePopup.alt = evt.target.alt;
   figcaptionImagePopup.textContent = evt.target.alt;
-  openPopup(popupOpenPic);
+  switchVisibilityOfPopup(popupOpenPic);
 };
 
-
+const elements = document.querySelector('.elements');
+const elementTemplate = document.querySelector('#template-elements').content;
 
 //Функция добавления карточек на страницу общая
-function addElement({ name, link }) {
-  const elements = document.querySelector('.elements');
-  const elementTemplate = document.querySelector('#template-elements').content;
+function createElement(item) {
+
   const element = elementTemplate.cloneNode(true);
+  const name = item.name;
+  const link = item.link;
 
   elementPlaceName = element.querySelector('.element__info-heading');
   elementPlaceName.textContent = name;
@@ -159,14 +127,25 @@ function addElement({ name, link }) {
   const elementDeleteBtn = element.querySelector('.element__delete-btn');
   elementDeleteBtn.addEventListener('click', handleDeletePost);
 
-  elements.prepend(element);
+  return element;
 };
+
+function renderCard(card) {
+  elements.prepend(card);
+}
+
+initialCards.forEach((item) => {
+  const card = createElement(item);
+  renderCard(card);
+});
 
 function handleCreateCard(evt) {
   evt.preventDefault();
-  addElement({ link: inputAddPlaceReference.value, name: inputAddPlaceName.value });
-  openPopup(popupAddPlace);
+  const newCard = createElement({ link: inputAddPlaceReference.value, name: inputAddPlaceName.value });
+  renderCard(newCard);
+  switchVisibilityOfPopup(popupAddPlace);
   evt.target.reset();
 };
 
 popupFormAddPlace.addEventListener('submit', handleCreateCard);
+
