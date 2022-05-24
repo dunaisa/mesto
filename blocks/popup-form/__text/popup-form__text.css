@@ -5,15 +5,8 @@
   line-height: 16.94px;
   color: rgba(0, 0, 0, 1);
   padding: 0 0 8px 0;
-  margin-bottom: 30px;
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   outline: none;
-}
-
-@media screen and (max-width: 768px) {
-  .popup-form__text {
-    padding-bottom: 9px;
-    margin-bottom: 30px;
-  }
+  width: 100%;
 }

@@ -35,22 +35,42 @@ popupOpenPicCloseBtn.addEventListener('click', function (evt) {
   switchVisibilityOfPopup(popupOpenPic);
 });
 
+// Закрыть попапы на ESC
+
+window.addEventListener('keydown', function (evt) {
+  if (evt.key === "Escape") {
+    popupEditProfile.classList.remove('popup_opened');
+  };
+});
+
+window.addEventListener('keydown', function (evt) {
+  if (evt.key === "Escape") {
+    popupAddPlace.classList.remove('popup_opened');
+  };
+});
+
+window.addEventListener('keydown', function (evt) {
+  if (evt.key === "Escape") {
+    popupOpenPic.classList.remove('popup_opened');
+  };
+});
+
 // Закрыть попапы кликом в любую точку вне попапа
 
-popupEditProfile.addEventListener('click', function (event) {
-  if (event.target == event.currentTarget) {
+popupEditProfile.addEventListener('click', function (evt) {
+  if (evt.target == evt.currentTarget) {
     switchVisibilityOfPopup(popupEditProfile);
   }
 });
 
-popupAddPlace.addEventListener('click', function (event) {
-  if (event.target == event.currentTarget) {
+popupAddPlace.addEventListener('click', function (evt) {
+  if (evt.target == evt.currentTarget) {
     switchVisibilityOfPopup(popupAddPlace);
   }
 });
 
-popupOpenPic.addEventListener('click', function (event) {
-  if (event.target == event.currentTarget) {
+popupOpenPic.addEventListener('click', function (evt) {
+  if (evt.target == evt.currentTarget) {
     switchVisibilityOfPopup(popupOpenPic);
   }
 });

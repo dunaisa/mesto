@@ -8,6 +8,7 @@
   padding: 0;
   margin: 0;
   border: none;
+  outline: none;
   cursor: pointer;
   align-self: center;
   transition: .8s;
