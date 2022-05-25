@@ -21,85 +21,68 @@ const popupOpenPic = document.querySelector('.popup-open-pic');
 const imagePopup = popupOpenPic.querySelector('.popup__image-figure');
 const figcaptionImagePopup = popupOpenPic.querySelector('.popup__image-figcaption');
 
-// Закрыть попапы на крестик
 
-popupEditProfileCloseBtn.addEventListener('click', function (evt) {
-  switchVisibilityOfPopup(popupEditProfile);
+
+//Универсальная функция открытия/закрытия попапа
+
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+
+  const popupBtn = popup.querySelector('.popup-form__btn');
+  popupBtn.classList.add('popup-form__btn_inactive');
+
+  document.addEventListener('keydown', closeByEscape);
+};
+
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeByEscape);
+};
+
+//Универсальная функция закрытия/открытия любого попапа на оверлей и крестик
+
+const popups = document.querySelectorAll('.popup');
+
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if (evt.target.classList.contains('popup_opened')) {
+      closePopup(popup);
+    };
+    if (evt.target.classList.contains('popup__close-btn')) {
+      closePopup(popup);
+    };
+  });
 });
 
-popupAddFormCloseBtn.addEventListener('click', function (evt) {
-  switchVisibilityOfPopup(popupAddPlace);
-});
+//Функция закрытия любого попапа на ESC
 
-popupOpenPicCloseBtn.addEventListener('click', function (evt) {
-  switchVisibilityOfPopup(popupOpenPic);
-});
-
-// Закрыть попапы на ESC
-
-window.addEventListener('keydown', function (evt) {
-  if (evt.key === "Escape") {
-    popupEditProfile.classList.remove('popup_opened');
+function closeByEscape(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
   };
-});
-
-window.addEventListener('keydown', function (evt) {
-  if (evt.key === "Escape") {
-    popupAddPlace.classList.remove('popup_opened');
-  };
-});
-
-window.addEventListener('keydown', function (evt) {
-  if (evt.key === "Escape") {
-    popupOpenPic.classList.remove('popup_opened');
-  };
-});
-
-// Закрыть попапы кликом в любую точку вне попапа
-
-popupEditProfile.addEventListener('click', function (evt) {
-  if (evt.target == evt.currentTarget) {
-    switchVisibilityOfPopup(popupEditProfile);
-  }
-});
-
-popupAddPlace.addEventListener('click', function (evt) {
-  if (evt.target == evt.currentTarget) {
-    switchVisibilityOfPopup(popupAddPlace);
-  }
-});
-
-popupOpenPic.addEventListener('click', function (evt) {
-  if (evt.target == evt.currentTarget) {
-    switchVisibilityOfPopup(popupOpenPic);
-  }
-});
+};
 
 // Открыть попапы
 
 popupEditFormOpenBtn.addEventListener('click', function (evt) {
   inputAuthorName.value = lastAuthorName.textContent;
   inputAuthorDescription.value = lastAuthorDescription.textContent;
-  switchVisibilityOfPopup(popupEditProfile);
+  openPopup(popupEditProfile);
 });
 
 popupAddFormOpenBtn.addEventListener('click', function (evt) {
-  switchVisibilityOfPopup(popupAddPlace);
+  openPopup(popupAddPlace);
 });
-
-// Универсальная форма открытия/закрытия попапов
-function switchVisibilityOfPopup(popupObject) {
-  popupObject.classList.toggle('popup_opened');
-};
 
 // Отправить на страницу новые данные из формы редaктирования профиля
 
 popupFormProfile.addEventListener('submit', function (evt) {
-  formSubmitHandler(evt);
-  switchVisibilityOfPopup(popupEditProfile);
+  handleProfileFormSubmit(evt);
+  closePopup(popupEditProfile);
 });
 
-function formSubmitHandler(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   lastAuthorName.textContent = inputAuthorName.value;
   lastAuthorDescription.textContent = inputAuthorDescription.value;
@@ -119,7 +102,7 @@ function handleOpenImage(evt) {
   imagePopup.src = evt.target.src;
   imagePopup.alt = evt.target.alt;
   figcaptionImagePopup.textContent = evt.target.alt;
-  switchVisibilityOfPopup(popupOpenPic);
+  openPopup(popupOpenPic);
 };
 
 const elements = document.querySelector('.elements');
@@ -132,7 +115,7 @@ function createElement(item) {
   const name = item.name;
   const link = item.link;
 
-  elementPlaceName = element.querySelector('.element__info-heading');
+  const elementPlaceName = element.querySelector('.element__info-heading');
   elementPlaceName.textContent = name;
 
   const elementImage = element.querySelector('.element__image');
@@ -163,7 +146,7 @@ function handleCreateCard(evt) {
   evt.preventDefault();
   const newCard = createElement({ link: inputAddPlaceReference.value, name: inputAddPlaceName.value });
   renderCard(newCard);
-  switchVisibilityOfPopup(popupAddPlace);
+  closePopup(popupAddPlace);
   evt.target.reset();
 };
 
