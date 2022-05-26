@@ -1,5 +1,6 @@
 .popup-form__btn_inactive {
-  background: #E5E5E5;
+  background: #F6F6F6;
   pointer-events: none;
   color: #B8B8B8;
+  border: 1px solid rgba(0, 0, 0, .2);
 }

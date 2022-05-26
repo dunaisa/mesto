@@ -21,16 +21,14 @@ const popupOpenPic = document.querySelector('.popup-open-pic');
 const imagePopup = popupOpenPic.querySelector('.popup__image-figure');
 const figcaptionImagePopup = popupOpenPic.querySelector('.popup__image-figcaption');
 
-
+const popups = document.querySelectorAll('.popup');
+const popupCreateBtn = popupAddPlace.querySelector('.popup-form__btn');
+const popupSaveBtn = popupEditProfile.querySelector('.popup-form__btn');
 
 //Универсальная функция открытия/закрытия попапа
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-
-  const popupBtn = popup.querySelector('.popup-form__btn');
-  popupBtn.classList.add('popup-form__btn_inactive');
-
   document.addEventListener('keydown', closeByEscape);
 };
 
@@ -40,8 +38,6 @@ function closePopup(popup) {
 };
 
 //Универсальная функция закрытия/открытия любого попапа на оверлей и крестик
-
-const popups = document.querySelectorAll('.popup');
 
 popups.forEach((popup) => {
   popup.addEventListener('mousedown', (evt) => {
@@ -69,11 +65,20 @@ popupEditFormOpenBtn.addEventListener('click', function (evt) {
   inputAuthorName.value = lastAuthorName.textContent;
   inputAuthorDescription.value = lastAuthorDescription.textContent;
   openPopup(popupEditProfile);
+  popupSaveBtn.removeAttribute("disabled");
+  popupSaveBtn.classList.remove('popup-form__btn_inactive');
 });
 
 popupAddFormOpenBtn.addEventListener('click', function (evt) {
   openPopup(popupAddPlace);
 });
+
+//Функция деактивации кнопки сохранить в попапе
+
+function disableCreateBtn() {
+  popupCreateBtn.classList.add('popup-form__btn_inactive');
+  popupCreateBtn.setAttribute("disabled", "disabled");
+};
 
 // Отправить на страницу новые данные из формы редaктирования профиля
 
@@ -143,10 +148,10 @@ initialCards.forEach((item) => {
 });
 
 function handleCreateCard(evt) {
-  evt.preventDefault();
   const newCard = createElement({ link: inputAddPlaceReference.value, name: inputAddPlaceName.value });
   renderCard(newCard);
   closePopup(popupAddPlace);
+  disableCreateBtn();
   evt.target.reset();
 };
 
