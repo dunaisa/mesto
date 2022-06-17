@@ -1,9 +1,16 @@
+import { initialCards } from "./cards.js";
+
+import { Card } from "./Card.js";
+
+import { config, FormValidator } from "./FormValidator.js";
+
+export const imagePopup = document.querySelector('.popup__image-figure');
+export const figcaptionImagePopup = document.querySelector('.popup__image-figcaption');
+
 const popupEditFormOpenBtn = document.querySelector('.profile__edit-btn');
 const popupAddFormOpenBtn = document.querySelector('.profile__add-btn');
 const popupEditProfile = document.querySelector('.popup-edit-profile');
-const popupEditProfileCloseBtn = document.querySelector('.popup__close-btn');
-const popupAddFormCloseBtn = document.querySelector('.popup__close-btn_type_add-place');
-const popupAddPlace = document.querySelector('.popup-add-place');
+export const popupAddPlace = document.querySelector('.popup-add-place');
 
 const popupFormProfile = document.querySelector('.popup-form_profile');
 const lastAuthorDescription = document.querySelector('.profile__subtitle');
@@ -11,28 +18,25 @@ const inputAuthorDescription = popupFormProfile.querySelector('.popup-form__text
 const lastAuthorName = document.querySelector('.profile__title');
 const inputAuthorName = popupFormProfile.querySelector('.popup-form__text_type_author-name');
 
-const popupFormAddPlace = document.querySelector('.popup-form_place');
-const inputAddPlaceName = popupFormAddPlace.querySelector('.popup-form__text_type_place-name');
-const inputAddPlaceReference = popupFormAddPlace.querySelector('.popup-form__text_type_place-reference');
+export const popupFormAddPlace = document.querySelector('.popup-form_place');
+export const inputAddPlaceName = popupFormAddPlace.querySelector('.popup-form__text_type_place-name');
+export const inputAddPlaceReference = popupFormAddPlace.querySelector('.popup-form__text_type_place-reference');
 
-
-const popupOpenPicCloseBtn = document.querySelector('.popup__close-btn_type_open-pic');
-const popupOpenPic = document.querySelector('.popup-open-pic');
-const imagePopup = popupOpenPic.querySelector('.popup__image-figure');
-const figcaptionImagePopup = popupOpenPic.querySelector('.popup__image-figcaption');
+export const popupOpenPic = document.querySelector('.popup-open-pic');
 
 const popups = document.querySelectorAll('.popup');
 const popupCreateBtn = popupAddPlace.querySelector('.popup-form__btn');
 const popupSaveBtn = popupEditProfile.querySelector('.popup-form__btn');
 
+
 //Универсальная функция открытия/закрытия попапа
 
-function openPopup(popup) {
+export function openPopup(popup) {
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', closeByEscape);
 };
 
-function closePopup(popup) {
+export function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closeByEscape);
 };
@@ -93,67 +97,42 @@ function handleProfileFormSubmit(evt) {
   lastAuthorDescription.textContent = inputAuthorDescription.value;
 };
 
-const handleSwitchLikePost = (evt) => {
-  evt.target.classList.toggle('element__like-btn_active');
-};
-
-const handleDeletePost = (evt) => {
-  evt.target.closest('.element').remove();
-};
-
-// Функция открытия фото во весь экран
-
-function handleOpenImage(evt) {
-  imagePopup.src = evt.target.src;
-  imagePopup.alt = evt.target.alt;
-  figcaptionImagePopup.textContent = evt.target.alt;
-  openPopup(popupOpenPic);
-};
-
+//Добавление карточки на страницу из формы
 const elements = document.querySelector('.elements');
-const elementTemplate = document.querySelector('#template-elements').content;
 
-//Функция добавления карточек на страницу общая
-function createElement(item) {
-
-  const element = elementTemplate.cloneNode(true);
-  const name = item.name;
-  const link = item.link;
-
-  const elementPlaceName = element.querySelector('.element__info-heading');
-  elementPlaceName.textContent = name;
-
-  const elementImage = element.querySelector('.element__image');
-  elementImage.alt = name;
-  elementImage.src = link;
-
-  elementImage.addEventListener('click', handleOpenImage);
-
-  const elementLikeBtn = element.querySelector('.element__like-btn');
-  elementLikeBtn.addEventListener('click', handleSwitchLikePost);
-
-  const elementDeleteBtn = element.querySelector('.element__delete-btn');
-  elementDeleteBtn.addEventListener('click', handleDeletePost);
-
-  return element;
+function renderCard(cardElement) {
+  elements.prepend(cardElement);
 };
-
-function renderCard(card) {
-  elements.prepend(card);
-}
-
-initialCards.forEach((item) => {
-  const card = createElement(item);
-  renderCard(card);
-});
 
 function handleCreateCard(evt) {
-  const newCard = createElement({ link: inputAddPlaceReference.value, name: inputAddPlaceName.value });
-  renderCard(newCard);
+  evt.preventDefault();
+  const card = new Card(inputAddPlaceName.value, inputAddPlaceReference.value, "#template-elements");
+  const cardElement = card.generateCard();
+  renderCard(cardElement);
   closePopup(popupAddPlace);
   disableCreateBtn();
   evt.target.reset();
 };
 
 popupFormAddPlace.addEventListener('submit', handleCreateCard);
+
+
+// Цикл добавления карточки на страницу из коробки
+initialCards.forEach((item) => {
+  const card = new Card(item.name, item.link, "#template-elements");
+  const cardElement = card.generateCard();
+  document.querySelector('.elements').prepend(cardElement);
+});
+
+const formValidators = {};
+
+Array.from(document.forms).forEach((formElement) => {
+  formValidators[formElement.name] = new FormValidator(config, formElement);
+  formValidators[formElement.name].enableValidation();
+});
+
+
+
+
+
 
