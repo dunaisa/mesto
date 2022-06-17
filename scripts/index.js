@@ -38,8 +38,7 @@ function renderCard(cardElement) {
 
 function handleAddCard(evt) {
   evt.preventDefault();
-  createCard(inputAddPlaceName.value, inputAddPlaceReference.value, "#template-elements");
-  renderCard(cardElement);
+  renderCard(createCard(inputAddPlaceName.value, inputAddPlaceReference.value, "#template-elements"));
   closePopup(popupAddPlace);
   evt.target.reset();
 };
