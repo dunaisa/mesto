@@ -1,4 +1,4 @@
-import { openPopup, closePopup, popupOpenPic, imagePopup, figcaptionImagePopup } from './index.js';
+import { openPopup, popupOpenPic, figcaptionImagePopup, imagePopup } from './utils.js';
 
 export class Card {
   constructor(name, link, elementTemplate) {
@@ -17,14 +17,16 @@ export class Card {
     this._element = this._getTemplate();
 
     // Добавим данные в разметку
-    this._element.querySelector('.element__image').src = this._link;
-    this._element.querySelector('.element__image').alt = this._name;
+    this._image = this._element.querySelector('.element__image');
+
+    this._image.src = this._link;
+    this._image.alt = this._name;
     this._element.querySelector('.element__info-heading').textContent = this._name;
 
     this._likeBtn = this._element.querySelector('.element__like-btn');
     this._deleteCardBtn = this._element.querySelector('.element__delete-btn');
 
-    this._image = this._element.querySelector('.element__image');
+
 
     this._setEventListeners();
     // Вернём элемент
@@ -44,13 +46,6 @@ export class Card {
     imagePopup.alt = this._name;
     figcaptionImagePopup.textContent = this._name;
     openPopup(popupOpenPic);
-  };
-
-  _handleClosePic = () => {
-    imagePopup.src = '';
-    imagePopup.alt = '';
-    figcaptionImagePopup.textContent = '';
-    closePopup(popupOpenPic);
   };
 
   _setEventListeners = () => {
