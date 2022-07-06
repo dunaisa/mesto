@@ -6,7 +6,6 @@ export class PopupWithForm extends Popup {
     this._submitHandler = submitHandler;
     this._form = this._popup.querySelector('.popup-form');
     this._inputList = Array.from(this._form.querySelectorAll('.popup-form__text'));
-
     this._getterCallBack = getterCallBack;
   };
 
@@ -16,14 +15,12 @@ export class PopupWithForm extends Popup {
       values[inputElement.name.slice(0, -6)] = inputElement.value;
     });
     return values;
-
   };
 
   _setInputValues = (values) => {
     this._inputList.forEach((inputElement) => {
       inputElement.value = values[inputElement.name.slice(0, -6)];
     });
-
   }
 
   _handlerFormSubmit = (evt) => {

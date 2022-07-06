@@ -50,7 +50,6 @@ export class Card {
 
     this._image.addEventListener('click', this._handleOpenPic);
 
-
     this._likeBtn.addEventListener('click', () => {
       this._handleLikePost();
     });
