@@ -25,3 +25,28 @@ export const initialCards = [
   }
 ];
 
+export const popupEditFormOpenBtn = document.querySelector(".profile__edit-btn");
+export const popupAddFormOpenBtn = document.querySelector(".profile__add-btn");
+
+export const popupFormProfile = document.querySelector(".popup-form_profile");
+
+export const popupFormAddPlace = document.querySelector(".popup-form_place");
+
+
+export const cardContainerSelector = '.elements';
+
+export const popupEditProfileSelector = '.popup-edit-profile';
+
+export const popupAddPlaceSelector = '.popup-add-place';
+
+export const popupOpenPicSelector = '.popup-open-pic';
+
+export const profileConfiguration = {
+  nameSelector: '.profile__title',
+  descriptionSelector: '.profile__subtitle',
+}
+
+export const popupWithImgConfig = {
+  image: '.popup__image-figure',
+  caption: '.popup__image-figcaption',
+}

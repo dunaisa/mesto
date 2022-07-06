@@ -1,10 +1,9 @@
-import { openPopup, popupOpenPic, figcaptionImagePopup, imagePopup } from './utils.js';
-
 export class Card {
-  constructor(name, link, elementTemplate) {
+  constructor(name, link, elementTemplate, handleCardClick) {
     this._name = name;
     this._link = link;
     this._elementTemplate = elementTemplate;
+    this._handleCardClick = handleCardClick;
   };
 
   _getTemplate = () => {
@@ -26,8 +25,6 @@ export class Card {
     this._likeBtn = this._element.querySelector('.element__like-btn');
     this._deleteCardBtn = this._element.querySelector('.element__delete-btn');
 
-
-
     this._setEventListeners();
     // Вернём элемент
     return this._element;
@@ -42,11 +39,8 @@ export class Card {
   };
 
   _handleOpenPic = () => {
-    imagePopup.src = this._link;
-    imagePopup.alt = this._name;
-    figcaptionImagePopup.textContent = this._name;
-    openPopup(popupOpenPic);
-  };
+    this._handleCardClick({ name: this._name, link: this._link });
+  }
 
   _setEventListeners = () => {
 
@@ -54,9 +48,8 @@ export class Card {
       this._removeCard();
     });
 
-    this._image.addEventListener('click', () => {
-      this._handleOpenPic();
-    });
+    this._image.addEventListener('click', this._handleOpenPic);
+
 
     this._likeBtn.addEventListener('click', () => {
       this._handleLikePost();

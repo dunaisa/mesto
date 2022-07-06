@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   mode: "production", // "production" | "development" | "none"
   // Chosen mode tells webpack to use its built-in optimizations accordingly.
-  entry: "./src/scripts/index.js", // string | object | array
+  entry: "./src/pages/index.js", // string | object | array
   // defaults to ./src
   // Here the application starts executing
   // and webpack starts bundling
