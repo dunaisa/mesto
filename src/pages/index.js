@@ -14,6 +14,10 @@ import { initialCards, popupEditFormOpenBtn, popupAddFormOpenBtn, popupFormProfi
 
 import "../pages/index.css";
 
+import { Api } from "../components/API.js"
+
+
+
 const popupWithImage = new PopupWithImage(popupWithImgConfig, popupOpenPicSelector);
 
 popupWithImage.setEventListeners();
@@ -28,7 +32,6 @@ const createCard = (item) => {
 //Экземпляр контейнера
 
 const cardList = new Section({
-  items: initialCards,
   renderer: createCard,
 },
   cardContainerSelector
@@ -39,10 +42,6 @@ const cardList = new Section({
 const handleCardSubmit = (item) => {
   cardList.addItem(item);
 };
-
-//Наполнили контейнер
-
-cardList.renderItems();
 
 ///////////Попап с добавлением карточки
 
@@ -97,3 +96,75 @@ Array.from(document.forms).forEach((formElement) => {
   formValidators[formElement.name] = new FormValidator(config, formElement);
   formValidators[formElement.name].enableValidation();
 });
+
+//Загрузка карточек с сервера
+
+
+/*
+fetch('https://mesto.nomoreparties.co/v1/cohort-45/cards', {
+  method: 'GET',
+  headers: {
+    authorization: 'bfc6d56e-7e9e-491a-a278-c2e6d08bdc0b'
+  }
+})
+  .then(res => res.json())
+  .then((result) => {
+    console.log(result);
+  })
+
+//Загрузка инфо о пользователе с сервера
+function getImages() {
+  fetch('https://nomoreparties.co/v1/cohort-45/users/me', {
+    method: 'GET',
+    headers: {
+      authorization: 'bfc6d56e-7e9e-491a-a278-c2e6d08bdc0b'
+    }
+  })
+    .then(res => res.json())
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+getImages();
+
+//Редактирование профиля
+
+fetch('https://mesto.nomoreparties.co/v1/cohort-45/users/me ', {
+  method: 'PATCH',
+  headers: {
+    authorization: 'bfc6d56e-7e9e-491a-a278-c2e6d08bdc0b',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    name: 'Marie Skłodowska Curie',
+    about: 'Physicist and Chemist'
+  })
+})
+  .then(res => res.json())
+  .then((result) => {
+    console.log(result);
+  });
+
+*/
+
+//Загрузка карточек с сервера
+
+const api = new Api({
+  url: 'https://mesto.nomoreparties.co/v1/cohort-45',
+  headers: {
+    authorization: 'c56e30dc-2883-4270-a59e-b2f7bae969c6',
+    'Content-Type': 'application/json'
+  }
+});
+
+api.getInitialCards()
+  .then((item) => {
+    cardList.renderItems(item);
+  })
+  .catch((err) => {
+    console.log(err); // выведем ошибку в консоль
+  });
+
+  //Добавление новой карточки на сервер
+

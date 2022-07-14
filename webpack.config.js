@@ -4,17 +4,14 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  mode: "production", // "production" | "development" | "none"
-  // Chosen mode tells webpack to use its built-in optimizations accordingly.
-  entry: "./src/pages/index.js", // string | object | array
-  // defaults to ./src
-  // Here the application starts executing
-  // and webpack starts bundling
+  entry: "./src/pages/index.js",
   output: {
-    // options related to how webpack emits results
-    path: path.resolve(__dirname, "dist"), // string (default)
+    path: path.resolve(__dirname, "dist"),
+    filename: 'main.js',
+    publicPath: ''
   },
   mode: "development",
+  devtool: "source-map",
   devServer: {
     static: path.resolve(__dirname, "./dist"), // путь, куда "смотрит" режим разработчика
     compress: true, // это ускорит загрузку в режиме разработки
