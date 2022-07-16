@@ -10,13 +10,11 @@ import { PopupWithImage } from "../components/PopupWithImage.js";
 
 import { UserInfo } from "../components/UserInfo.js";
 
-import { initialCards, popupEditFormOpenBtn, popupAddFormOpenBtn, popupFormProfile, popupFormAddPlace, profileConfiguration, cardContainerSelector, popupEditProfileSelector, popupAddPlaceSelector, popupWithImgConfig, popupOpenPicSelector } from "../utils/constants.js";
+import { PopupWithConfirmation } from "../components/PopupWithConfirmation.js";
+
+import { popupEditFormOpenBtn, popupAddFormOpenBtn, popupFormProfile, popupFormAddPlace, profileConfiguration, cardContainerSelector, popupEditProfileSelector, popupAddPlaceSelector, popupWithImgConfig, popupOpenPicSelector, popupChangePhotoOpenBtn, popupChangePhotoSelector, popupFormChangePhoto, deleteCardBtn, popupFormConfirmDlt, api } from "../utils/constants.js";
 
 import "../pages/index.css";
-
-import { Api } from "../components/API.js"
-
-
 
 const popupWithImage = new PopupWithImage(popupWithImgConfig, popupOpenPicSelector);
 
@@ -37,10 +35,23 @@ const cardList = new Section({
   cardContainerSelector
 );
 
-//Функция добаления карточки
+//Функция добаления карточки на страницу
+
+// const handleCardSubmit = (item) => {
+//   cardList.addItem(item);
+// };
+
+//Добавление новой карточки на сервер и отображение на странице
 
 const handleCardSubmit = (item) => {
-  cardList.addItem(item);
+
+  api.setInitialCards(item.name, item.link)
+    .then((res) => {
+      cardList.addItem(res);
+    })
+    .catch((err) => {
+      console.log(err); // выведем ошибку в консоль
+    });
 };
 
 ///////////Попап с добавлением карточки
@@ -65,6 +76,39 @@ const popupAddImageForm = new PopupWithForm(
 
 popupAddImageForm.setEventListeners();
 
+///////////Попап с добавлением юзер фото
+
+const handleChangePhotoForm = () => {
+  formValidators[popupFormChangePhoto.name].cleanUpForm();
+  popupChangePhotoForm.open();
+};
+
+popupChangePhotoOpenBtn.addEventListener('click', handleChangePhotoForm);
+
+const userPhoto = new UserInfo(profileConfiguration);
+//userPhoto.setUserPhoto;
+
+//Обновление аватара пользователя
+
+const handleAvatarFormSubmit = (data) => {
+  api.setAvatar({ avatar: data.link })
+    .then((res) => {
+      userPhoto.setUserPhoto(res);
+    })
+    .catch((err) => {
+      console.log(err); // выведем ошибку в консоль
+    });
+
+};
+
+const popupChangePhotoForm = new PopupWithForm(
+  popupChangePhotoSelector,
+  handleAvatarFormSubmit,
+);
+
+popupChangePhotoForm.setEventListeners();
+
+
 /////////////////UserProfile
 
 const handleOpenEditProfile = () => {
@@ -77,10 +121,19 @@ const handleOpenEditProfile = () => {
 popupEditFormOpenBtn.addEventListener('click', handleOpenEditProfile);
 
 const userProfile = new UserInfo(profileConfiguration);
-userProfile.setUserInfo;
+//userProfile.setUserInfo;
 
-function handleInfoFormSubmit(data) {
-  userProfile.setUserInfo(data);
+// Редактирование профиля
+
+const handleInfoFormSubmit = (data) => {
+  api.setInfo({ name: data.name, about: data.about })
+    .then((res) => {
+      userProfile.setUserInfo(res);
+    })
+    .catch((err) => {
+      console.log(err); // выведем ошибку в консоль
+    });
+
 };
 
 const profilePopup = new PopupWithForm(
@@ -96,6 +149,10 @@ Array.from(document.forms).forEach((formElement) => {
   formValidators[formElement.name] = new FormValidator(config, formElement);
   formValidators[formElement.name].enableValidation();
 });
+
+//Попап удаления карточки
+
+
 
 //Загрузка карточек с сервера
 
@@ -150,14 +207,6 @@ fetch('https://mesto.nomoreparties.co/v1/cohort-45/users/me ', {
 
 //Загрузка карточек с сервера
 
-const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-45',
-  headers: {
-    authorization: 'c56e30dc-2883-4270-a59e-b2f7bae969c6',
-    'Content-Type': 'application/json'
-  }
-});
-
 api.getInitialCards()
   .then((item) => {
     cardList.renderItems(item);
@@ -166,5 +215,37 @@ api.getInitialCards()
     console.log(err); // выведем ошибку в консоль
   });
 
-  //Добавление новой карточки на сервер
+// Загрузка информации о пользователе с сервера
+
+api.getInfo()
+  .then((data) => {
+    userProfile.setUserInfo({ name: data.name, about: data.about })
+    userPhoto.setUserPhoto({ avatar: data.avatar })
+  })
+  .catch((err) => {
+    console.log(err); // выведем ошибку в консоль
+  });
+
+  //Попап с подтверждением удаления карточки
+
+const handleConfirmFormOpen = () => {
+  popupConfirmForm.open();
+}
+
+deleteCardBtn.addEventListener('click', handleConfirmFormOpen)
+
+const popupConfirmForm = new PopupWithConfirmation(
+  popupFormConfirmDlt
+);
+
+popupConfirmForm.setEventListeners();
+
+
+
+
+
+
+
+
+
 

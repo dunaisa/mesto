@@ -20,6 +20,7 @@ export class PopupWithForm extends Popup {
   _setInputValues = (values) => {
     this._inputList.forEach((inputElement) => {
       inputElement.value = values[inputElement.name.slice(0, -6)];
+
     });
   }
 
@@ -47,4 +48,6 @@ export class PopupWithForm extends Popup {
     super.close();
     this._form.reset();
   };
+
+  //публичный метод, который меняет надпись (если истина, то надпись сохранение, иначе - обыное состояние) не только сами данные, но и колбек - функция-посредник, текст контент
 }

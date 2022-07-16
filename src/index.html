@@ -15,10 +15,12 @@
 
   <main class="content">
     <section class="profile">
-      <img src="images/profile-avatar.jpg" alt="Аватар профиля" class="profile__avatar" />
+      <button class="profile__avatar-btn">
+        <img src="#" alt="Аватар профиля" class="profile__avatar" />
+      </button>
       <div class="profile__info">
-        <h1 class="profile__title">Жак-Ив Кусто</h1>
-        <p class="profile__subtitle">Исследователь океана</p>
+        <h1 class="profile__title"></h1>
+        <p class="profile__subtitle"></p>
         <button class="profile__edit-btn" type="button" aria-label="Редактировать"></button>
       </div>
       <button class="profile__add-btn" type="button" aria-label="Добавить"></button>
@@ -43,7 +45,7 @@
             <span class="name-input-error popup-form__input-error"></span>
           </label>
           <label class="popup-form__field">
-            <input type="text" placeholder="О cебе" name="info-input"
+            <input type="text" placeholder="О cебе" name="about-input"
               class="popup-form__text popup-form__text_type_description" id="description-input" required minlength="2"
               maxlength="200" />
             <span class="description-input-error popup-form__input-error"></span>
@@ -85,6 +87,35 @@
         <figcaption class="popup__image-figcaption"></figcaption>
       </figure>
       <button class="popup__close-btn popup__close-btn_type_open-pic" type="button" aria-label="Закрыть"></button>
+    </div>
+  </div>
+
+  <div class="popup popup-change-photo">
+    <div class="popup__container">
+      <h3 class="popup__container-heading">Обновить аватар</h3>
+      <form action="submit" name="Avatar-edit-form" method="post" class="popup-form popup-form_avatar" novalidate>
+        <fieldset class="popup-form__set">
+          <label class="popup-form__field">
+            <input type="url" placeholder="Ссылка на картинку" name="link-input"
+              class="popup-form__text popup-form__text_type_place-reference" id="reference-input" required />
+            <span class="reference-input-error popup-form__input-error"></span>
+          </label>
+          <button class="popup-form__btn" type="submit">Сохранить</button>
+        </fieldset>
+      </form>
+      <button class="popup__close-btn popup__close-btn_type_add-place" type="button" aria-label="Закрыть"></button>
+    </div>
+  </div>
+
+  <div class="popup popup-confirm-delete">
+    <div class="popup__container">
+      <h3 class="popup__container-heading">Вы уверены?</h3>
+      <form action="submit" name="Avatar-edit-form" method="post" class="popup-form popup-form_confirm" novalidate>
+        <fieldset class="popup-form__set">
+          <button class="popup-form__btn" type="submit">Да</button>
+        </fieldset>
+      </form>
+      <button class="popup__close-btn popup__close-btn_type_add-place" type="button" aria-label="Закрыть"></button>
     </div>
   </div>
 
