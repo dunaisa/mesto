@@ -70,10 +70,10 @@ export const api = new Api({
 
 export const confirmDeleteBtnCaptions = {
   defaultCaption: 'Да',
-  activeCaption: 'Удаляю...',
+  activeCaption: 'Удаление...',
 }
 
 export const btnCaptions = {
   defaultCaption: 'Схранить',
-  activeCaption: 'Сохраняю...',
+  activeCaption: 'Сохранение...',
 }
