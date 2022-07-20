@@ -6,19 +6,20 @@ export class UserInfo {
     this._userInfo = document.querySelector(this._descriptionSelector);
     this._profileAvatarSelector = profileAvatarSelector;
     this._userPhoto = document.querySelector(this._profileAvatarSelector);
-
-  }
+  };
 
   getUserInfo = () => {
     return { name: this._userName.textContent, about: this._userInfo.textContent };
-  }
+  };
 
-  setUserInfo = (data) => {
-    this._userName.textContent = data.name;
-    this._userInfo.textContent = data.about;
-  }
+  setUserInfo = ({ name, about, avatar, _id }) => {
+    this._userName.textContent = name;
+    this._userInfo.textContent = about;
+    this._userPhoto.src = avatar;
+    this._id = _id;
+  };
 
-  setUserPhoto = (data) => {
-    this._userPhoto.src = data.avatar;
-  }
+  getUserId = () => {
+    return this._id;
+  };
 }

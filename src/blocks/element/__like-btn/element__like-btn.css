@@ -10,6 +10,7 @@
   border: none;
   cursor: pointer;
   align-self: center;
+  justify-self: center;
   transition: .4s;
 }
 

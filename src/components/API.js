@@ -9,21 +9,21 @@ export class Api {
 
   }
 
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    // если ошибка, отклоняем промис
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+
   //Получение карточек с сервера
 
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       headers: this._headers
     })
-      .then(res => {
-        if (res.ok) {
-
-          return res.json();
-        }
-
-        // если ошибка, отклоняем промис
-        return Promise.reject(`Ошибка: ${res.status}`);
-      });
+      .then(this._checkResponse);
   }
 
   // Отправка карточек на сервер
@@ -38,14 +38,7 @@ export class Api {
       headers: this._headers,
       body: JSON.stringify(cardBody)
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-
-        // если ошибка, отклоняем промис
-        return Promise.reject(`Ошибка: ${res.status}`);
-      });
+      .then(this._checkResponse);
   }
 
   // Загрузка информации о пользователе с сервера
@@ -54,15 +47,7 @@ export class Api {
     return fetch(`${this._url}/users/me`, {
       headers: this._headers
     })
-      .then(res => {
-        if (res.ok) {
-
-          return res.json();
-        }
-
-        // если ошибка, отклоняем промис
-        return Promise.reject(`Ошибка: ${res.status}`);
-      });
+      .then(this._checkResponse);
   }
 
   // Загрузка информации о пользователе на сервер
@@ -77,14 +62,7 @@ export class Api {
       headers: this._headers,
       body: JSON.stringify(userInfoBody)
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        console.log(userInfoBody)
-        // если ошибка, отклоняем промис
-        return Promise.reject(`Ошибка: ${res.status}`);
-      });
+      .then(this._checkResponse);
   }
 
   setAvatar(data) {
@@ -96,17 +74,23 @@ export class Api {
       headers: this._headers,
       body: JSON.stringify(userAvatarBody)
     })
-      .then(res => {
-        if (res.ok) {
-
-          return res.json();
-        }
-        console.log(data.avatar)
-        // если ошибка, отклоняем промис
-        return Promise.reject(`Ошибка: ${res.status}`);
-      });
-
+      .then(this._checkResponse);
   }
 
+  toggleLike(cardId, isLiked) {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
+      method: isLiked ? 'DELETE' : 'PUT',
+      headers: this._headers,
+    })
+      .then(this._checkResponse);
+  }
+
+  deleteCard(cardId) {
+    return fetch(`${this._url}/cards/${cardId}`, {
+      method: 'DELETE',
+      headers: this._headers,
+    })
+      .then(this._checkResponse);
+  }
 }
 

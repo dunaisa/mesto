@@ -12,11 +12,13 @@ import { UserInfo } from "../components/UserInfo.js";
 
 import { PopupWithConfirmation } from "../components/PopupWithConfirmation.js";
 
-import { popupEditFormOpenBtn, popupAddFormOpenBtn, popupFormProfile, popupFormAddPlace, profileConfiguration, cardContainerSelector, popupEditProfileSelector, popupAddPlaceSelector, popupWithImgConfig, popupOpenPicSelector, popupChangePhotoOpenBtn, popupChangePhotoSelector, confirmDeleteBtnCaptions, btnCaptions, popupOpenConfirmSelector, popupFormAvatar, api } from "../utils/constants.js";
+import { popupEditFormOpenBtn, popupAddFormOpenBtn, popupFormProfile, popupFormAddPlace, profileConfiguration, cardContainerSelector, popupEditProfileSelector, popupAddPlaceSelector, popupWithImgConfig, popupOpenPicSelector, popupChangePhotoOpenBtn, popupChangePhotoSelector, popupFormChangePhoto, deleteCardBtn, popupFormConfirmDlt, api } from "../utils/constants.js";
 
 import "../pages/index.css";
 
 const popupWithImage = new PopupWithImage(popupWithImgConfig, popupOpenPicSelector);
+
+const userProfile = new UserInfo(profileConfiguration);
 
 popupWithImage.setEventListeners();
 
@@ -32,43 +34,12 @@ function handleLikeCard(cardId, isLiked, setLikesCallback) {
     });
 }
 
-//Попап с подтверждением удаления
-
-const popupConfirmForm = new PopupWithConfirmation(
-  popupOpenConfirmSelector,
-  handleDeleteCard,
-  confirmDeleteBtnCaptions
-);
-
-popupConfirmForm.setEventListeners();
-
-function handleDeleteConfirm(cardId, removeCardCallback) {
-  popupConfirmForm.open(cardId, removeCardCallback);
-}
-
 //Вернули карточку
 
 const createCard = (item) => {
-  const card = new Card(item, userProfile.getUserId(), "#template-elements", popupWithImage.open, handleDeleteConfirm, handleLikeCard);
+  const card = new Card(item, userProfile.getUserId(), "#template-elements", popupWithImage.open, handleDeleteCard, handleLikeCard);
   return card.generateCard();
 };
-
-//Функция удаления карточки
-
-function handleDeleteCard(cardId, removeCardCallback, toggleBtnStatusCallback, closePopupCallback) {
-  toggleBtnStatusCallback(true);
-  api.deleteCard(cardId)
-    .then(() => {
-      removeCardCallback();
-      closePopupCallback();
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-    .finally(() => {
-      toggleBtnStatusCallback(false);
-    })
-}
 
 //Экземпляр контейнера
 
@@ -78,21 +49,45 @@ const cardList = new Section({
   cardContainerSelector
 );
 
+//Функция удаления карточки
+
+function handleDeleteCard(card) {
+  api.deleteCard(card.getId())
+    .then(() => {
+      card.removeCard()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
+//Попап с подтверждением удаления карточки
+
+function handleConfirmFormOpen() {
+  popupConfirmForm.open();
+}
+
+deleteCardBtn.addEventListener('click', handleConfirmFormOpen)
+
+const popupConfirmForm = new PopupWithConfirmation(
+  popupFormConfirmDlt
+);
+
+popupConfirmForm.setEventListeners();
+
+
 //Добавление новой карточки на сервер и отображение на странице
 
-const handleCardSubmit = (item, toggleBtnStatusCallback, closePopupCallback) => {
-  toggleBtnStatusCallback(true);
+const handleCardSubmit = (item) => {
+
   api.setInitialCards(item.name, item.link)
     .then((res) => {
+      console.dir(res)
       cardList.addItem(res);
-      closePopupCallback();
     })
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль
-    })
-    .finally(() => {
-      toggleBtnStatusCallback(false);
-    })
+    });
 };
 
 ///////////Попап с добавлением карточки
@@ -111,7 +106,6 @@ popupAddFormOpenBtn.addEventListener('click', handleOpenAddForm);
 const popupAddImageForm = new PopupWithForm(
   popupAddPlaceSelector,
   handleCardSubmit,
-  btnCaptions
 );
 
 //Добавили обработчик событий
@@ -121,45 +115,36 @@ popupAddImageForm.setEventListeners();
 ///////////Попап с добавлением юзер фото
 
 const handleChangePhotoForm = () => {
-  formValidators[popupFormAvatar.name].cleanUpForm();
-  popupChangeAvatar.open();
+  formValidators[popupFormChangePhoto.name].cleanUpForm();
+  popupChangePhotoForm.open();
 };
 
 popupChangePhotoOpenBtn.addEventListener('click', handleChangePhotoForm);
 
-const userProfile = new UserInfo(profileConfiguration);
-
 //Обновление аватара пользователя
 
-const handleAvatarFormSubmit = (data, toggleBtnStatusCallback, closePopupCallback) => {
-  toggleBtnStatusCallback(true);
+const handleAvatarFormSubmit = (data) => {
   api.setAvatar({ avatar: data.link })
-    .then((res) => {
-      userProfile.setUserInfo(res);
-      closePopupCallback();
-    })
+    .then(userProfile.setUserInfo)
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль
-    })
-    .finally(() => {
-      toggleBtnStatusCallback(false);
-    })
+    });
+
 };
 
 //Экземпляр попапа/формы с обновлением аватара
 
-const popupChangeAvatar = new PopupWithForm(
+const popupChangePhotoForm = new PopupWithForm(
   popupChangePhotoSelector,
   handleAvatarFormSubmit,
-  btnCaptions
 );
 
-popupChangeAvatar.setEventListeners();
+popupChangePhotoForm.setEventListeners();
+
 
 /////////////////UserProfile
 
 const handleOpenEditProfile = () => {
-
   formValidators[popupFormProfile.name].cleanUpForm();
   profilePopup.open();
 };
@@ -168,28 +153,25 @@ const handleOpenEditProfile = () => {
 
 popupEditFormOpenBtn.addEventListener('click', handleOpenEditProfile);
 
+
+//userProfile.setUserInfo;
+
 // Редактирование профиля
 
-const handleInfoFormSubmit = (data, toggleBtnStatusCallback, closePopupCallback) => {
-  toggleBtnStatusCallback(true);
+const handleInfoFormSubmit = (data) => {
   api.setInfo({ name: data.name, about: data.about })
     .then((res) => {
       userProfile.setUserInfo(res);
-      closePopupCallback();
     })
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль
-    })
-    .finally(() => {
-      toggleBtnStatusCallback(false);
-    })
+    });
 
 };
 
 const profilePopup = new PopupWithForm(
   popupEditProfileSelector,
   handleInfoFormSubmit,
-  btnCaptions,
   userProfile.getUserInfo);
 
 profilePopup.setEventListeners();
@@ -203,9 +185,11 @@ Array.from(document.forms).forEach((formElement) => {
 
 Promise.all([api.getInfo(), api.getInitialCards()])
   .then(([data, item]) => {
+    console.dir(data)
 
     // Загрузка информации о пользователе с сервера
-    userProfile.setUserInfo(data);
+    userProfile.setUserInfo({ name: data.name, about: data.about, _id: data._id });
+    userProfile.setUserInfo({ avatar: data.avatar });
 
     //Загрузка карточек с сервера
     cardList.renderItems(item);
@@ -214,3 +198,12 @@ Promise.all([api.getInfo(), api.getInitialCards()])
   .catch((err) => {
     console.log(err); // выведем ошибку в консоль
   });
+
+
+
+
+
+
+
+
+

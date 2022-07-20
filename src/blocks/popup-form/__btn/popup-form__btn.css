@@ -19,11 +19,11 @@
   opacity: .8;
 }
 
-@media screen and (max-width: 1024px) {
+/* @media screen and (max-width: 1024px) {
   .popup-form__btn {
     max-width: 357px;
   }
-}
+} */
 
 @media screen and (max-width: 320px) {
   .popup-form__btn {

@@ -1,11 +1,14 @@
 import { Popup } from "./Popup.js";
 
 export class PopupWithForm extends Popup {
-  constructor(popupSelector, submitHandler, getterCallBack = null) {
+  constructor(popupSelector, submitHandler, { defaultCaption, activeCaption }, getterCallBack = null) {
     super(popupSelector);
     this._submitHandler = submitHandler;
     this._form = this._popup.querySelector('.popup-form');
     this._inputList = Array.from(this._form.querySelectorAll('.popup-form__text'));
+    this._defaultCaption = defaultCaption;
+    this._activeCaption = activeCaption;
+    this._buttonElement = this._form.querySelector('.popup-form__btn');
     this._getterCallBack = getterCallBack;
   };
 
@@ -20,34 +23,34 @@ export class PopupWithForm extends Popup {
   _setInputValues = (values) => {
     this._inputList.forEach((inputElement) => {
       inputElement.value = values[inputElement.name.slice(0, -6)];
-
     });
-  }
+  };
+
+  toggleBtnStatus = (isSaving) => {
+    this._buttonElement.textContent = isSaving ? this._activeCaption : this._defaultCaption;
+  };
 
   _handlerFormSubmit = (evt) => {
     evt.preventDefault();
-    this._submitHandler(this._getInputValues());
-    this.close();
-  }
+    this._submitHandler(this._getInputValues(), this.toggleBtnStatus, this.close);
+  };
 
   setEventListeners = () => {
     super.setEventListeners();
     this._form.addEventListener('submit', this._handlerFormSubmit);
   };
 
-  open() {
+  open = () => {
     if (this._getterCallBack) {
       this._setInputValues(this._getterCallBack());
     } else {
       this._form.reset();
     }
     super.open();
-  }
+  };
 
   close = () => {
     super.close();
     this._form.reset();
   };
-
-  //публичный метод, который меняет надпись (если истина, то надпись сохранение, иначе - обыное состояние) не только сами данные, но и колбек - функция-посредник, текст контент
 }

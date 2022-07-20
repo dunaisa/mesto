@@ -35,11 +35,7 @@ export const popupFormProfile = document.querySelector(".popup-form_profile");
 
 export const popupFormAddPlace = document.querySelector(".popup-form_place");
 
-export const popupFormChangePhoto = document.querySelector(".popup-form_avatar");
-
-export const popupFormConfirmDlt = document.querySelector(".popup-form_confirm");
-
-export const deleteCardBtn = document.querySelector(".element__delete-btn");
+export const popupFormAvatar = document.querySelector(".popup-form_avatar");
 
 export const cardContainerSelector = '.elements';
 
@@ -51,7 +47,7 @@ export const popupChangePhotoSelector = '.popup-change-photo';
 
 export const popupOpenPicSelector = '.popup-open-pic';
 
-//export const profilePhotoSelector = '.profile__avatar';
+export const popupOpenConfirmSelector = '.popup-confirm-delete';
 
 export const profileConfiguration = {
   nameSelector: '.profile__title',
@@ -71,3 +67,13 @@ export const api = new Api({
     'Content-Type': 'application/json'
   }
 });
+
+export const confirmDeleteBtnCaptions = {
+  defaultCaption: 'Да',
+  activeCaption: 'Удаляю...',
+}
+
+export const btnCaptions = {
+  defaultCaption: 'Схранить',
+  activeCaption: 'Сохраняю...',
+}
